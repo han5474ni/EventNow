@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to EventNow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .button {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .features {
+            margin: 30px 0;
+        }
+        .feature {
+            margin-bottom: 15px;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">EventNow</div>
+    </div>
+    
+    <p>Hello {{name}},</p>
+    
+    <p>Welcome to EventNow! We're thrilled to have you join our community of event enthusiasts.</p>
+    
+    <p>With EventNow, you can:</p>
+    
+    <div class="features">
+        <div class="feature">✅ Discover exciting events in your area</div>
+        <div class="feature">✅ Register for events with just a few clicks</div>
+        <div class="feature">✅ Connect with other attendees and organizers</div>
+        <div class="feature">✅ Create and manage your own events</div>
+    </div>
+    
+    <p>Ready to get started? Click the button below to log in to your account:</p>
+    
+    <div style="text-align: center;">
+        <a href="{{login_url}}" class="button">Log In to EventNow</a>
+    </div>
+    
+    <p>If you have any questions or need assistance, feel free to reply to this email. Our support team is always here to help.</p>
+    
+    <p>Best regards,<br>The EventNow Team</p>
+    
+    <div class="footer">
+        <p>This email was sent to you because you registered for an account on EventNow.</p>
+        <p>&copy; 2025 EventNow. All rights reserved.</p>
+    </div>
+</body>
+</html>
