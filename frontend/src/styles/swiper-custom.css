@@ -1,0 +1,79 @@
+/* Custom styles for Swiper */
+
+.swiper {
+  width: 100%;
+  padding-top: 30px;
+  padding-bottom: 50px;
+  height: 500px; /* Tinggi yang lebih kecil */
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 100%; /* Menggunakan lebar penuh */
+  height: 400px; /* Tinggi yang lebih kecil */
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Menghilangkan efek hover */
+/* .swiper-slide:hover {
+  transform: translateY(-10px);
+} */
+
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background: #fff;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px;
+}
+
+/* Card effect styles */
+.swiper-effect-cards {
+  overflow: visible;
+}
+
+.swiper-effect-cards .swiper-slide {
+  transform-origin: center bottom;
+  backface-visibility: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .swiper-slide {
+    width: 260px;
+    height: 360px;
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .swiper-button-next:after,
+  .swiper-button-prev:after {
+    font-size: 14px;
+  }
+}

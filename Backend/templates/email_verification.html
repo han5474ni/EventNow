@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .button {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">EventNow</div>
+    </div>
+    
+    <p>Hello {{name}},</p>
+    
+    <p>Thank you for signing up for EventNow! To complete your registration and verify your email address, please click the button below:</p>
+    
+    <div style="text-align: center;">
+        <a href="{{verify_url}}" class="button">Verify Email Address</a>
+    </div>
+    
+    <p>This link will expire in {{valid_hours}} hours.</p>
+    
+    <p>If the button above doesn't work, copy and paste the following URL into your browser:</p>
+    
+    <p style="word-break: break-all;">{{verify_url}}</p>
+    
+    <p>If you didn't create an account with us, you can safely ignore this email.</p>
+    
+    <p>Best regards,<br>The EventNow Team</p>
+    
+    <div class="footer">
+        <p>This is an automated message, please do not reply to this email.</p>
+        <p>&copy; 2025 EventNow. All rights reserved.</p>
+    </div>
+</body>
+</html>
