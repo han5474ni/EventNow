@@ -31,22 +31,7 @@ const Profile = () => {
     };
   }, []);
 
-  // Update form data when user data is loaded
-  useEffect(() => {
-    if (user) {
-      setFormData(prev => ({
-        ...prev,
-        full_name: user.full_name || '',
-        email: user.email || ''
-      }));
-      
-      if (isMounted) {
-        fetchUserRegistrations();
-      }
-    }
-  }, [user, isMounted]);
-
-  const fetchUserRegistrations = async () => {
+  const fetchUserRegistrations = React.useCallback(async () => {
     if (!isMounted) return;
     
     try {
@@ -83,7 +68,22 @@ const Profile = () => {
         setDataLoading(false);
       }
     }
-  };
+  }, [isMounted]);
+
+  // Update form data when user data is loaded
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        full_name: user.full_name || '',
+        email: user.email || ''
+      }));
+      
+      if (isMounted) {
+        fetchUserRegistrations();
+      }
+    }
+  }, [user, isMounted, fetchUserRegistrations]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

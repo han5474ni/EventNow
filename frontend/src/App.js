@@ -9,6 +9,7 @@ import { login } from './store/authSlice';
 import MainLayout from './components/layouts/MainLayout';
 
 // Public Pages
+import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
 import Events from './pages/Events';
 import EventDetail from './pages/EventDetail';
@@ -88,7 +89,8 @@ function App() {
     <Router>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="/" element={<MainLayout><LandingPage /></MainLayout>} />
+        <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
         <Route path="/events/:id" element={<MainLayout><EventDetail /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />

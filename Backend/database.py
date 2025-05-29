@@ -1,50 +1,41 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from config import settings
-
-# Create SQLAlchemy engine
-from urllib.parse import quote_plus
-
-# Force reload environment variables to ensure we have the latest settings
+import os
 from dotenv import load_dotenv
+from typing import Generator
+
+# Load environment variables from .env file
 load_dotenv(override=True)
 
-# Get database type from environment variable directly
-import os
-database_type = os.getenv('DATABASE_TYPE', 'sqlite').lower()
-print(f"Database type from environment: {database_type}")
+# Database configuration - Using SQLite by default for development
+# To use PostgreSQL, set DATABASE_TYPE=postgresql and provide the necessary credentials in .env
+DATABASE_TYPE = os.getenv('DATABASE_TYPE', 'sqlite')
+DATABASE_NAME = os.getenv('DATABASE_NAME', 'eventnow')
 
-if database_type == 'postgresql':
-    # Use PostgreSQL connection
-    # Get database settings directly from environment variables
-    db_name = os.getenv('DATABASE_NAME', 'postgres')
-    db_user = os.getenv('DATABASE_USER', 'postgres')
-    db_pass = os.getenv('DATABASE_PASSWORD', '')
-    db_host = os.getenv('DATABASE_HOST', 'localhost')
-    db_port = os.getenv('DATABASE_PORT', '5432')
-    
-    print(f"PostgreSQL settings: name={db_name}, user={db_user}, host={db_host}, port={db_port}")
-    
-    # Build connection URL
-    SQLALCHEMY_DATABASE_URL = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
-    
-    # Create engine without SQLite-specific connect_args
-    engine = create_engine(SQLALCHEMY_DATABASE_URL)
-    
-    print(f"Using PostgreSQL database: {db_name}")
+# Build connection URL
+if DATABASE_TYPE.lower() == 'postgresql':
+    # PostgreSQL configuration
+    DATABASE_USER = os.getenv('DATABASE_USER', 'postgres')
+    DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', '')
+    DATABASE_HOST = os.getenv('DATABASE_HOST', 'localhost')
+    DATABASE_PORT = os.getenv('DATABASE_PORT', '5432')
+    SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 else:
-    # Use SQLite connection
-    db_name = os.getenv('DATABASE_NAME', 'eventnow')
-    SQLALCHEMY_DATABASE_URL = f"sqlite:///./{db_name}.db"
-    
-    # Create engine with SQLite-specific connect_args
-    engine = create_engine(
-        SQLALCHEMY_DATABASE_URL, 
-        connect_args={"check_same_thread": False}  # Only needed for SQLite
-    )
-    
-    print(f"Using SQLite database: {db_name}.db")
+    # SQLite configuration (default)
+    SQLALCHEMY_DATABASE_URL = f"sqlite:///./{DATABASE_NAME}.db"
+
+# Create SQLAlchemy engine
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    pool_pre_ping=True,  # Enable connection health checks
+    pool_recycle=300,     # Recycle connections after 5 minutes
+    pool_size=5,          # Number of connections to keep open
+    max_overflow=10,      # Number of connections to allow in overflow
+    echo=False            # Set to True for SQL query logging
+)
+
+print(f"Using {DATABASE_TYPE} database: {DATABASE_NAME} on {DATABASE_HOST}:{DATABASE_PORT}")
 
 # Create a SessionLocal class for database sessions
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

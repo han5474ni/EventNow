@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     REQUIRE_EMAIL_VERIFICATION: bool = False  # Set to True to require email verification
     
     # Database settings
-    DATABASE_TYPE: str = "sqlite"  # Options: sqlite, postgresql
+    DATABASE_TYPE: str = "postgresql"  # Options: sqlite, postgresql
     DATABASE_NAME: str = "eventnow_db"
     DATABASE_USER: str = "postgres"
     DATABASE_PASSWORD: str = "postgres"

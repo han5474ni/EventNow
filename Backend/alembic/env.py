@@ -4,14 +4,18 @@ import sys
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 # Add the project root to the Python path
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, project_root)
 
 # Import your SQLAlchemy models and Base
-from Backend.models.base import Base
-from Backend.database import SQLALCHEMY_DATABASE_URL
+from models.base import Base
+from database import SQLALCHEMY_DATABASE_URL, engine
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -61,11 +65,8 @@ def run_migrations_online() -> None:
     In this scenario we need to create an Engine
     and associate a connection with the context.
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    # Use the engine from database.py instead of creating a new one
+    connectable = engine
 
     with connectable.connect() as connection:
         context.configure(
@@ -73,6 +74,8 @@ def run_migrations_online() -> None:
             target_metadata=target_metadata,
             compare_type=True,
             compare_server_default=True,
+            include_schemas=True,
+            render_as_batch=True,  # For better SQLite support
         )
 
         with context.begin_transaction():
