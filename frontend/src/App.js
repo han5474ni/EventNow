@@ -89,7 +89,7 @@ function App() {
     <Router>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<MainLayout><LandingPage /></MainLayout>} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
         <Route path="/events" element={<MainLayout><Events /></MainLayout>} />
         <Route path="/events/:id" element={<MainLayout><EventDetail /></MainLayout>} />

@@ -1,15 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser } from '../../store/authActions';
+import { logoutUser, updateUserProfile } from '../../store/authActions';
+import axios from 'axios';
+import { config } from '../../config';
 
 const MainLayout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user = useSelector(state => state.auth.user);
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const { user, isAuthenticated, loading } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch user data when component mounts or auth state changes
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (isAuthenticated && !user) {
+        try {
+          const token = localStorage.getItem('eventnow_token') || sessionStorage.getItem('eventnow_token');
+          if (!token) {
+            dispatch(logoutUser());
+            return;
+          }
+          
+          const response = await axios.get(`${config.API_URL}/api/users/me`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (response.data) {
+            dispatch(updateUserProfile(response.data));
+          } else {
+            // If no user data, log out
+            dispatch(logoutUser());
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          dispatch(logoutUser());
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchUserData();
+  }, [dispatch, isAuthenticated, user]);
   
   const handleLogout = () => {
     // Dispatch the logoutUser action which handles clearing tokens and updating Redux state
@@ -27,7 +67,7 @@ const MainLayout = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white shadow-sm fixed w-full top-0 left-0 z-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -50,7 +90,12 @@ const MainLayout = ({ children }) => {
             </div>
             
             <div className="hidden md:flex items-center">
-              {isAuthenticated ? (
+              {isLoading ? (
+                <div className="flex items-center space-x-4">
+                  <div className="animate-pulse h-8 w-24 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-8 w-16 bg-gray-200 rounded"></div>
+                </div>
+              ) : isAuthenticated ? (
                 <div className="relative flex items-center">
                   {user?.role === 'admin' && (
                     <Link 
@@ -140,7 +185,12 @@ const MainLayout = ({ children }) => {
             </div>
             
             <div className="pt-4 pb-3 border-t border-gray-200">
-              {isAuthenticated ? (
+              {isLoading ? (
+                <div className="px-2 space-y-2">
+                  <div className="animate-pulse h-6 w-32 bg-gray-200 rounded"></div>
+                  <div className="animate-pulse h-4 w-24 bg-gray-200 rounded"></div>
+                </div>
+              ) : isAuthenticated ? (
                 <div className="px-2 space-y-1">
                   {user?.role === 'admin' && (
                     <Link 
@@ -194,7 +244,7 @@ const MainLayout = ({ children }) => {
       </header>
       
       {/* Main content */}
-      <main className="flex-grow bg-gray-50">
+      <main className="flex-1 pt-16"> 
         {children}
       </main>
       

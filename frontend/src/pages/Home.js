@@ -9,17 +9,7 @@ import Hero from '../components/home/Hero';
 // Import Card component
 import Card from '../components/common/Card';
 
-// Helper function to format date
-const formatDate = (dateString) => {
-  if (!dateString) return 'Date not set';
-  try {
-    const options = { day: 'numeric', month: 'short', year: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-  } catch (error) {
-    console.error('Error formatting date:', error);
-    return 'Invalid date';
-  }
-};
+
 
 // Helper function to format time from ISO string to 12-hour format
 const formatTime = (dateTimeString) => {

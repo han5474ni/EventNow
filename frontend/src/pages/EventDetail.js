@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { config, API_ENDPOINTS } from '../config';
+import { FiArrowLeft, FiCalendar, FiMapPin, FiDollarSign, FiUsers, FiMessageSquare, FiStar, FiClock } from 'react-icons/fi';
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -15,11 +16,38 @@ const EventDetail = () => {
   const [commentName, setCommentName] = useState('Anonymous');
   const [rating, setRating] = useState(5);
   const [commentSubmitting, setCommentSubmitting] = useState(false);
+  const [commentError, setCommentError] = useState('');
+  const navigate = useNavigate();
   
-  // We need the user object to check if the current user is the author of any comments
-  // eslint-disable-next-line no-unused-vars
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  
+  // Add gradient background style
+  const gradientStyle = {
+    background: 'linear-gradient(135deg, #FFD700 0%, #0000FF 50%, #000000 75%, #FF0000 100%)',
+    backgroundSize: '200% 200%',
+    animation: 'gradient 10s ease infinite',
+  };
+  
+  // Add animation for the gradient
+  const globalStyles = `
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  `;
+
+  // Add global styles
+  React.useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.innerHTML = globalStyles;
+    document.head.appendChild(styleElement);
+    
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, [globalStyles]);
 
   useEffect(() => {
     const fetchEventDetails = async () => {
@@ -200,17 +228,32 @@ const EventDetail = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <Link to="/events" className="text-blue-600 hover:underline flex items-center">
-          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
-          Back to Events
-        </Link>
+    <div className="min-h-screen bg-gray-50">
+      <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+      <div className="container mx-auto">
+        <div className="relative overflow-hidden" style={gradientStyle}>
+          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="container mx-auto px-4 py-6 relative z-10">
+            <div className="flex items-center">
+              <button 
+                onClick={() => navigate(-1)} 
+                className="flex items-center text-white hover:text-gray-200 transition-colors"
+              >
+                <FiArrowLeft className="w-5 h-5 mr-1" />
+                <span>Back to Events</span>
+              </button>
+            </div>
+            
+            <div className="mt-8 mb-12 text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Event Details</h1>
+              <div className="w-24 h-1 bg-white mx-auto rounded-full"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-md overflow-hidden p-6 mb-8">
+      <div className="container mx-auto px-4 -mt-16 relative z-20">
+        <div className="bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
         {/* Event Header Section */}
         <div className="mb-6">
           {/* Event Image Section */}
@@ -264,31 +307,52 @@ const EventDetail = () => {
           </div>
           
           {/* Registration Button */}
-          <div className="flex space-x-4 mt-4">
-            {isAuthenticated && (
+          <div className="flex flex-wrap gap-4 mt-6">
+            {isAuthenticated ? (
               event.registration_link ? (
                 <a 
                   href={event.registration_link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  className="group relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
                 >
-                  <svg className="mr-2 -ml-1 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Register for Event
+                  <span className="absolute right-0 -mt-12 h-32 w-8 translate-x-12 rotate-12 transform bg-white opacity-10 transition-all duration-1000 ease-out group-hover:-translate-x-40"></span>
+                  <span className="relative flex items-center">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    Register Now
+                  </span>
                 </a>
               ) : (
-                <Link 
-                  to={`/events/${id}/register`}
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                <button
+                  disabled
+                  className="px-6 py-3 bg-gray-300 text-gray-600 rounded-full font-medium cursor-not-allowed focus:outline-none"
                 >
-                  <svg className="mr-2 -ml-1 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Register for Event
-                </Link>
+                  Registration Closed
+                </button>
               )
+            ) : (
+              <Link 
+                to="/login" 
+                state={{ from: `/events/${id}` }}
+                className="group relative inline-flex items-center px-8 py-3 overflow-hidden text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
+              >
+                <span className="absolute right-0 -mt-12 h-32 w-8 translate-x-12 rotate-12 transform bg-white opacity-10 transition-all duration-1000 ease-out group-hover:-translate-x-40"></span>
+                <span className="relative flex items-center">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  Login to Register
+                </span>
+              </Link>
+            )}
+            
+            {event.registration_deadline && (
+              <div className="flex items-center text-sm text-gray-600 bg-blue-50 px-4 py-2 rounded-full">
+                <FiClock className="mr-1 text-blue-500" />
+                Registration closes {new Date(event.registration_deadline).toLocaleDateString()}
+              </div>
             )}
           </div>
           
@@ -354,20 +418,80 @@ const EventDetail = () => {
         </div>
         
         {/* Event Description */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">About This Event</h2>
-          <div className="prose max-w-none text-gray-700">
-            <p className="whitespace-pre-line">{event.description}</p>
+        <div className="p-8">
+          <div className="border-b border-gray-200 pb-6 mb-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">About This Event</h2>
+            <div className="prose max-w-none text-gray-600 leading-relaxed">
+              <p className="whitespace-pre-line">{event.description}</p>
+            </div>
+          </div>
+          
+          {/* Event Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-gray-50 p-6 rounded-xl">
+              <div className="flex items-center mb-3">
+                <div className="p-2 bg-blue-100 rounded-lg mr-3">
+                  <FiCalendar className="w-5 h-5 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800">Date & Time</h3>
+              </div>
+              <p className="text-gray-600 ml-11">
+                {formatDate(event.start_datetime)}
+                {event.end_datetime && (
+                  <span className="block">to {formatDate(event.end_datetime)}</span>
+                )}
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-xl">
+              <div className="flex items-center mb-3">
+                <div className="p-2 bg-green-100 rounded-lg mr-3">
+                  <FiMapPin className="w-5 h-5 text-green-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800">Location</h3>
+              </div>
+              <p className="text-gray-600 ml-11">
+                {event.location || 'Online Event'}
+                {event.online_event && (
+                  <span className="block text-sm text-blue-600 mt-1">This is an online event</span>
+                )}
+              </p>
+            </div>
+            
+            <div className="bg-gray-50 p-6 rounded-xl">
+              <div className="flex items-center mb-3">
+                <div className="p-2 bg-yellow-100 rounded-lg mr-3">
+                  <FiDollarSign className="w-5 h-5 text-yellow-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800">Price</h3>
+              </div>
+              <p className="text-gray-600 ml-11">
+                {!event.price && event.price !== 0 ? (
+                  <span className="text-gray-500">Price not specified</span>
+                ) : event.price === 0 ? (
+                  <span className="text-green-600 font-semibold">Free</span>
+                ) : (
+                  <span className="font-semibold">${Number(event.price).toFixed(2)}</span>
+                )}
+                {event.max_participants > 0 && (
+                  <span className="block text-sm text-gray-500 mt-1">
+                    Max {event.max_participants} participants
+                  </span>
+                )}
+              </p>
+            </div>
           </div>
         </div>
       </div>
       
       {/* Comments Section */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-6">Comments & Reviews</h2>
+      <div className="container mx-auto px-4 mt-12 mb-16">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h2 className="text-2xl font-bold mb-2 text-gray-800">Comments & Reviews</h2>
+          <div className="w-16 h-1 bg-gradient-to-r from-yellow-500 to-red-500 mb-6 rounded-full"></div>
         
-        <div className="mb-8">
-          <h3 className="text-lg font-medium mb-4">Share Your Experience</h3>
+          <div className="mb-8">
+            <h3 className="text-lg font-medium mb-4">Share Your Experience</h3>
             <form onSubmit={handleSubmitComment}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Rating</label>
@@ -421,70 +545,89 @@ const EventDetail = () => {
                 <p className="text-sm text-gray-500 mt-1">Your comment will be visible to all event attendees.</p>
               </div>
               
-              <button
-                type="submit"
-                disabled={commentSubmitting}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
-              >
-                {commentSubmitting ? 'Submitting...' : 'Submit Comment'}
-              </button>
+              <div className="flex justify-between items-center">
+                <button
+                  type="submit"
+                  disabled={commentSubmitting}
+                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-300 transform hover:scale-105 flex items-center"
+                >
+                  {commentSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <FiMessageSquare className="mr-2" />
+                      Post Comment
+                    </>
+                  )}
+                </button>
+                <div className="text-sm text-gray-500">
+                  {commentError && <span className="text-red-500">{commentError}</span>}
+                </div>
+              </div>
             </form>
           </div>
         
-        {comments.length === 0 ? (
-          <div className="text-center py-8">
-            <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-            </svg>
-            <p className="text-gray-600 mb-2">No comments yet.</p>
-            <p className="text-gray-500 text-sm">Be the first to share your experience!</p>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {comments.map((comment) => (
-              <div key={comment.id} className="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
-                <div className="flex justify-between items-start mb-3">
-                  <div className="flex items-start">
-                    <div className="bg-blue-100 text-blue-800 rounded-full w-10 h-10 flex items-center justify-center font-semibold mr-3">
-                      {comment.author && comment.author.full_name ? comment.author.full_name.charAt(0).toUpperCase() : '?'}
+          {comments.length === 0 ? (
+            <div className="text-center py-8">
+              <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+              </svg>
+              <p className="text-gray-600 mb-2">No comments yet.</p>
+              <p className="text-gray-500 text-sm">Be the first to share your experience!</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {comments.map((comment) => (
+                <div key={comment.id} className="bg-white rounded-lg shadow-sm p-5 border border-gray-100">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-start">
+                      <div className="bg-blue-100 text-blue-800 rounded-full w-10 h-10 flex items-center justify-center font-semibold mr-3">
+                        {comment.author && comment.author.full_name ? comment.author.full_name.charAt(0).toUpperCase() : '?'}
+                      </div>
+                      <div>
+                        <p className="font-semibold">{comment.author && comment.author.full_name ? comment.author.full_name : 'Anonymous'}</p>
+                        <p className="text-sm text-gray-500">
+                          {new Date(comment.created_at).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-semibold">{comment.author && comment.author.full_name ? comment.author.full_name : 'Anonymous'}</p>
-                      <p className="text-sm text-gray-500">
-                        {new Date(comment.created_at).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        })}
-                      </p>
-                    </div>
+                    
+                    {comment.rating && (
+                      <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-md">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <svg
+                            key={star}
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`h-4 w-4 ${star <= comment.rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                        <span className="ml-1 text-xs text-gray-600">{comment.rating}.0</span>
+                      </div>
+                    )}
                   </div>
                   
-                  {comment.rating && (
-                    <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-md">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <svg
-                          key={star}
-                          xmlns="http://www.w3.org/2000/svg"
-                          className={`h-4 w-4 ${star <= comment.rating ? 'text-yellow-400' : 'text-gray-300'}`}
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                      <span className="ml-1 text-xs text-gray-600">{comment.rating}.0</span>
-                    </div>
-                  )}
+                  <div className="pl-13 ml-13">
+                    <p className="whitespace-pre-line text-gray-700">{comment.content}</p>
+                  </div>
                 </div>
-                
-                <div className="pl-13 ml-13">
-                  <p className="whitespace-pre-line text-gray-700">{comment.content}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {isAuthenticated && recommendedEvents.length > 0 && (
@@ -516,6 +659,7 @@ const EventDetail = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
