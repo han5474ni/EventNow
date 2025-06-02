@@ -1,20 +1,44 @@
-# Event Management System
+# 🎉 EventNow - Platform Manajemen Event Modern
 
-Sebuah aplikasi manajemen event modern yang dibangun menggunakan React untuk frontend dan FastAPI untuk backend. Sistem ini memungkinkan pengguna untuk membuat, mengelola, dan mendaftar ke berbagai event.
+![EventNow Banner](https://via.placeholder.com/1200x400?text=EventNow+Platform)
 
-## Fitur Utama
+Platform EventNow adalah solusi lengkap untuk mengelola dan menemukan berbagai acara menarik. Dibangun dengan teknologi modern, EventNow memudahkan pengguna untuk menemukan, berpartisipasi, dan mengelola acara dengan antarmuka yang ramah pengguna.
 
-- Autentikasi pengguna (login, register, reset password)
-- Manajemen event (create, read, update, delete)
-- Sistem pendaftaran event
-- Sistem komentar
-- Verifikasi email
-- Sistem rekomendasi event
-- Integrasi dengan Slack
-- Manajemen profil pengguna
-- Rating untuk event
+## 📋 Daftar Isi
+- [Fitur Utama](#-fitur-utama)
+- [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
+- [Persyaratan Sistem](#-persyaratan-sistem)
+- [Panduan Instalasi](#-panduan-instalasi)
+- [Struktur Proyek](#-struktur-proyek)
+- [Cara Penggunaan](#-cara-penggunaan)
+- [Kontribusi](#-kontribusi)
+- [Lisensi](#-lisensi)
+- [Kontak](#-kontak)
 
-## Teknologi yang Digunakan
+## ✨ Fitur Utama
+
+### Untuk Pengguna Umum
+- 🔍 Jelajahi berbagai event menarik
+- 📅 Lihat detail event termasuk deskripsi, lokasi, dan waktu
+- 🎟️ Daftar dan beli tiket event
+- 📱 Antarmuka responsif yang mendukung perangkat mobile
+- 💬 Berikan rating dan ulasan untuk event
+
+### Untuk Organizer
+- ➕ Buat dan kelola event dengan mudah
+- 📊 Pantau jumlah pendaftar dan penjualan tiket
+- ✏️ Update informasi event kapan saja
+- 👥 Kelola peserta event
+- 📈 Analitik dan laporan event
+
+### Sistem Umum
+- 🔐 Autentikasi pengguna yang aman
+- ✉️ Verifikasi email
+- 🔄 Reset password
+- 📱 Responsive design
+- ⚡ Performa tinggi dengan optimasi caching
+
+## 🛠 Teknologi yang Digunakan
 
 ### Frontend
 - React.js
