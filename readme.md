@@ -26,30 +26,25 @@
 - 🔍 Temukan event kampus dengan mudah
 - 📅 Lihat jadwal dan detail event secara lengkap
 - 🎟️ Daftar event dengan sekali klik
-- 🔔 Dapatkan notifikasi event terbaru
-- ⭐ Beri rating dan ulasan untuk event yang diikuti
 - 📱 Antarmuka mobile-friendly
 
-### 🛠️ Untuk Panitia/Admin
+### 🛠️ Untuk Admin
 - ✨ Buat dan kelola event dengan mudah
 - 📊 Pantau statistik pendaftar secara real-time
 - 📈 Analisis partisipasi event
-- 👥 Kelola pendaftaran peserta
-- ✉️ Kirim notifikasi ke peserta
-- 📑 Ekspor data peserta
 
 ### 🔒 Keamanan & Manajemen
 - 🔐 Autentikasi berbasis JWT
 - ✉️ Verifikasi email
 - 🔄 Reset password yang aman
-- 👥 Manajemen peran pengguna (Admin, Panitia, Peserta)
+- 👥 Manajemen peran pengguna (Admin, Peserta)
 - 📱 Responsive design
 - ⚡ Optimasi performa tinggi
 
 ## 🚀 Teknologi
 
 ### Backend
-- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.8+)
+- **Framework**: Python Pyramid
 - **Database**: PostgreSQL
 - **ORM**: SQLAlchemy
 - **Autentikasi**: JWT (JSON Web Tokens)
@@ -185,43 +180,20 @@ npm test -- --coverage
 yarn test --coverage
 ```
 
-## 🤝 Berkontribusi
-
-Kami sangat menghargai kontribusi dari komunitas! Berikut cara berkontribusi:
-
-1. Fork repositori ini
-2. Buat branch untuk fitur baru (`git checkout -b fitur/namafitur`)
-3. Commit perubahan Anda (`git commit -m 'Menambahkan fitur baru'`)
-4. Push ke branch (`git push origin fitur/namafitur`)
-5. Buat Pull Request
-
-### Panduan Kontribusi
-- Ikuti standar koding yang ada
-- Pastikan semua test berjalan dengan sukses
-- Update dokumentasi sesuai kebutuhan
-- Buat issue terlebih dahulu sebelum mengerjakan fitur besar
-
-## 📄 Lisensi
-
-Proyek ini dilisensikan di bawah Lisensi MIT - lihat file [LICENSE](LICENSE) untuk detail lebih lanjut.
-
 ## 📞 Kontak
 
-- **Email**: support@eventnow.app
+- **Email**: handayani.122140166@student.itera.ac.id
 - **Twitter**: [@EventNowID](https://twitter.com/EventNowID)
-- **Website**: [https://eventnow.app](https://eventnow.app)
 
 ## 🙏 Ucapan Terima Kasih
 
-- Terima kasih kepada semua kontributor yang telah membantu pengembangan proyek ini
-- Ikon oleh [React Icons](https://react-icons.github.io/react-icons/)
-- Dibangun dengan ❤️ untuk komunitas kampus Indonesia
+- Dibangun dengan ❤️ untuk Pemrograman Web ITERA
 
 ---
 
 <div align="center">
   <p>© 2025 EventNow - All Rights Reserved</p>
-  <p>Dibuat dengan 💙 oleh Tim EventNow</p>
+  <p>Dibuat dengan 💙 oleh Iohn</p>
 </div>
 - Email service integration
 
