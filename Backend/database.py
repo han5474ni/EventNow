@@ -8,22 +8,21 @@ from typing import Generator
 # Load environment variables from .env file
 load_dotenv(override=True)
 
-# Database configuration - Using SQLite by default for development
-# To use PostgreSQL, set DATABASE_TYPE=postgresql and provide the necessary credentials in .env
-DATABASE_TYPE = os.getenv('DATABASE_TYPE', 'sqlite')
+# Database configuration
+DATABASE_TYPE = os.getenv('DATABASE_TYPE', 'postgresql')
 DATABASE_NAME = os.getenv('DATABASE_NAME', 'eventnow')
+DATABASE_USER = os.getenv('DATABASE_USER', 'postgres')
+DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', 'yani12345')
+DATABASE_HOST = os.getenv('DATABASE_HOST', 'localhost')
+DATABASE_PORT = os.getenv('DATABASE_PORT', '5432')
 
 # Build connection URL
 if DATABASE_TYPE.lower() == 'postgresql':
-    # PostgreSQL configuration
-    DATABASE_USER = os.getenv('DATABASE_USER', 'postgres')
-    DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD', '')
-    DATABASE_HOST = os.getenv('DATABASE_HOST', 'localhost')
-    DATABASE_PORT = os.getenv('DATABASE_PORT', '5432')
     SQLALCHEMY_DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
+    print(f"Connecting to PostgreSQL database at {DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}")
 else:
-    # SQLite configuration (default)
     SQLALCHEMY_DATABASE_URL = f"sqlite:///./{DATABASE_NAME}.db"
+    print("Using SQLite database (not recommended for production)")
 
 # Create SQLAlchemy engine
 engine = create_engine(

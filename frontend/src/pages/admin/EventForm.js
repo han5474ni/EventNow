@@ -69,8 +69,8 @@ const EventForm = () => {
       if (event.image_url) {
         console.log('Setting image preview URL - Original:', event.image_url);
         
-        // Try the direct path to static/event_images first
-        const previewUrl = `${config.API_URL.replace('/api', '')}/static/event_images/${event.image_url.split('/').pop()}`;
+        // Construct the correct static file URL
+        const previewUrl = `${config.API_URL.replace('/api', '')}${event.image_url}`;
         console.log('Setting image preview URL - Modified:', previewUrl);
         
         setImagePreview(previewUrl);
@@ -126,7 +126,7 @@ const EventForm = () => {
           const imageFormData = new FormData();
           imageFormData.append('image', imageFile);
           
-          const imageResponse = await axios.post(`${config.API_URL}/events/${id}/image`, imageFormData, {
+          const imageResponse = await axios.put(`${config.API_URL}/events/${id}/image`, imageFormData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${token}`

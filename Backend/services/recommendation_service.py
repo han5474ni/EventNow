@@ -78,7 +78,7 @@ def get_popular_events(
         )
         .group_by(models.Event.id)
         .order_by(
-            func.desc('registration_count'),
+            func.count(models.Registration.id).desc(),
             models.Event.start_datetime.asc()
         )
     )

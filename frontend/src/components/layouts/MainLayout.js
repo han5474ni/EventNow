@@ -7,7 +7,8 @@ import { config } from '../../config';
 
 const MainLayout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, isAuthenticated, loading } = useSelector(state => state.auth);
+  const [profileImage, setProfileImage] = useState('');
+  const { user, isAuthenticated } = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -95,7 +96,7 @@ const MainLayout = ({ children }) => {
                   <div className="animate-pulse h-8 w-24 bg-gray-200 rounded"></div>
                   <div className="animate-pulse h-8 w-16 bg-gray-200 rounded"></div>
                 </div>
-              ) : isAuthenticated ? (
+              ) : isAuthenticated && user ? (
                 <div className="relative flex items-center">
                   {user?.role === 'admin' && (
                     <Link 
@@ -105,37 +106,59 @@ const MainLayout = ({ children }) => {
                       Admin Dashboard
                     </Link>
                   )}
-                  
                   <Link 
                     to="/profile" 
-                    className="mr-4 flex items-center text-sm font-medium text-gray-700 hover:text-blue-600"
+                    className="flex items-center mr-4 hover:bg-gray-50 px-2 py-1 rounded-md transition-colors"
                   >
-                    <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold mr-2">
-                      {user?.full_name?.charAt(0)}
+                    {user?.profile_image ? (
+                      <img
+                        src={`${config.API_URL}/uploads/profiles/${user.profile_image}`}
+                        alt="Profile"
+                        className="h-8 w-8 rounded-full object-cover mr-2"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || 'U')}&background=3B82F6&color=fff`;
+                        }}
+                      />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold mr-2">
+                        {user?.full_name?.charAt(0) || '?'}
+                      </div>
+                    )}
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium text-gray-900">{user?.full_name || 'Pengguna'}</span>
+                      <span className="text-xs text-gray-500">{user?.role === 'admin' ? 'Admin' : 'Pengguna'}</span>
                     </div>
-                    <span>{user?.full_name}</span>
                   </Link>
-                  
                   <button 
                     onClick={handleLogout}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                    className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 flex items-center"
                   >
-                    Logout
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Keluar
                   </button>
                 </div>
               ) : (
                 <div className="flex items-center space-x-4">
                   <Link 
                     to="/login" 
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 flex items-center"
                   >
-                    Log in
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    Masuk
                   </Link>
                   <Link 
                     to="/register" 
-                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+                    className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 flex items-center"
                   >
-                    Sign up
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Daftar
                   </Link>
                 </div>
               )}
@@ -202,13 +225,30 @@ const MainLayout = ({ children }) => {
                     </Link>
                   )}
                   
-                  <Link 
-                    to="/profile" 
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Your Profile
-                  </Link>
+                  <div className="flex items-center px-3 py-2">
+                    {user?.profile_image ? (
+                      <img
+                        src={`${config.API_URL}/uploads/profiles/${user.profile_image}`}
+                        alt="Profile"
+                        className="h-8 w-8 rounded-full object-cover mr-3"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || 'U')}&background=3B82F6&color=fff`;
+                        }}
+                      />
+                    ) : (
+                      <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold mr-3">
+                        {user?.full_name?.charAt(0) || '?'}
+                      </div>
+                    )}
+                    <Link 
+                      to="/profile" 
+                      className="text-base font-medium text-gray-700 hover:text-blue-600 flex-1"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Profile Saya
+                    </Link>
+                  </div>
                   
                   <button 
                     onClick={() => {

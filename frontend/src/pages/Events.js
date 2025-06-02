@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Removed unused Link import
 import axios from 'axios';
 import { config } from '../config';
 import { FiSearch, FiClock, FiMapPin, FiCalendar, FiArrowRight } from 'react-icons/fi';
@@ -70,7 +70,6 @@ const Events = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [categories] = useState(['music', 'sports', 'business', 'technology', 'education']);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Fetch events from API
   useEffect(() => {
@@ -122,15 +121,7 @@ const Events = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Function to check if a path is active
-  const isActive = (path) => {
-    return window.location.pathname === path;
-  };
-
-  // Toggle mobile menu
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // Removed unused isActive and toggleMenu functions
   
   // Format date to a readable format
   const formatDate = (dateString) => {
@@ -153,27 +144,61 @@ const Events = () => {
   
   // Process image URL
   const getImageUrl = (url) => {
-    if (!url) return null;
+    if (!url) {
+      console.log('No URL provided to getImageUrl');
+      return 'https://via.placeholder.com/400x225?text=No+Image+Available';
+    }
+    
+    console.log('Processing image URL:', url);
     
     try {
       // If it's a data URL, return as is
-      if (url.startsWith('data:')) return url;
-      
-      // If it's a relative URL starting with /uploads
-      if (url.startsWith('/uploads/')) return `${config.API_URL}${url}`;
-      
-      // If it's just a filename
-      if (!url.includes('/') && !url.startsWith('http')) {
-        return `${config.API_URL}/uploads/${url}`;
+      if (url.startsWith('data:')) {
+        return url;
       }
       
-      // If it's already a full URL
-      if (url.startsWith('http')) return url;
+      // If it's already a full URL, return as is
+      if (url.startsWith('http')) {
+        return url;
+      }
       
-      return null;
+      // Handle the case where URL might be coming from the API with /api prefix
+      if (url.startsWith('/api/static/')) {
+        const correctedUrl = url.replace('/api/static/', '/static/');
+        const baseUrl = config.API_URL.replace('/api', '');
+        return `${baseUrl}${correctedUrl}`;
+      }
+      
+      // Handle static file paths
+      if (url.startsWith('/static/')) {
+        const baseUrl = config.API_URL.replace('/api', '');
+        return `${baseUrl}${url}`;
+      }
+      
+      // If it's a relative path, try to construct the full URL
+      if (url.startsWith('.')) {
+        const baseUrl = window.location.origin;
+        return `${baseUrl}${url.replace(/^\./, '')}`;
+      }
+      
+      // For any other case, try to construct a valid URL using the API base URL
+      const baseUrl = config.API_URL.replace('/api', '');
+      const filename = url.split('/').pop();
+      
+      // Try different possible locations for the image
+      const possiblePaths = [
+        `${baseUrl}/static/event_images/${filename}`,
+        `${baseUrl}/static/uploads/${filename}`,
+        `${baseUrl}/uploads/${filename}`,
+        `${baseUrl}/images/${filename}`,
+      ];
+      
+      // Return the first path that exists (this will be checked by the browser)
+      return possiblePaths[0];
+      
     } catch (error) {
       console.error('Error processing image URL:', error);
-      return null;
+      return 'https://via.placeholder.com/400x225?text=Error+Loading+Image';
     }
   };
 

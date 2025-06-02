@@ -35,9 +35,10 @@ async def send_event_notification_email(background_tasks: BackgroundTasks, event
         try:
             background_tasks.add_task(
                 send_email,
-                recipient,
+                [recipient],
                 subject,
-                html_content
+                {"content": html_content},
+                "event_notification.html"
             )
             logger.info(f"Event notification email queued for {recipient}")
         except Exception as e:
@@ -73,9 +74,10 @@ async def send_registration_notification_email(background_tasks: BackgroundTasks
     try:
         background_tasks.add_task(
             send_email,
-            organizer_email,
+            [organizer_email],
             subject,
-            html_content
+            {"content": html_content},
+            "registration_notification.html"
         )
         logger.info(f"Registration notification email queued for {organizer_email}")
     except Exception as e:

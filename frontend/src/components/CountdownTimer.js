@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { config } from '../config';
 
 const CountdownTimer = ({ targetDate, event }) => {
   const [timeLeft, setTimeLeft] = useState({
@@ -57,15 +58,30 @@ const CountdownTimer = ({ targetDate, event }) => {
       {/* Event Preview Background */}
       <div className="absolute inset-0 z-0">
         <img 
-          src={event?.image_url || 'https://source.unsplash.com/random/1200x400/?event'} 
+          src={(() => {
+            if (!event?.image_url) return 'https://source.unsplash.com/random/1200x400/?event';
+            
+            // If it's already a full URL, use it as is
+            if (event.image_url.startsWith('http')) {
+              return event.image_url;
+            }
+            
+            // If it's a path starting with /static, prepend the base URL
+            if (event.image_url.startsWith('/static/')) {
+              return `${config.API_URL.replace('/api', '')}${event.image_url}`;
+            }
+            
+            // For any other case, try to construct the URL
+            return `${config.API_URL.replace('/api', '')}/static/event_images/${event.image_url.split('/').pop()}`;
+          })()}
           alt={event?.title || 'Event'} 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-all duration-500 transform hover:scale-105"
           onError={(e) => {
             e.target.onerror = null;
             e.target.src = 'https://source.unsplash.com/random/1200x400/?event';
           }}
         />
-        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/90"></div>
       </div>
       
       {/* Content */}

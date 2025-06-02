@@ -1,386 +1,299 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { config } from '../config';
+import { updateUser } from '../store/authSlice';
+import MainLayout from '../components/layouts/MainLayout';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
-  const user = useSelector(state => state.auth.user);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
-    full_name: '',
+    name: '',
     email: '',
-    current_password: '',
-    new_password: '',
-    confirm_password: ''
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   });
   
-  const [registrations, setRegistrations] = useState([]);
-  const [showRegistrations, setShowRegistrations] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [dataLoading, setDataLoading] = useState(true);
-  const [success, setSuccess] = useState(null);
-  const [error, setError] = useState(null);
-  const [isMounted, setIsMounted] = useState(true);
 
-  useEffect(() => {
-    return () => {
-      // Cleanup function to prevent state updates on unmounted component
-      setIsMounted(false);
-    };
-  }, []);
-
-  const fetchUserRegistrations = React.useCallback(async () => {
-    if (!isMounted) return;
-    
-    try {
-      setDataLoading(true);
-      const token = localStorage.getItem('eventnow_token') || sessionStorage.getItem('eventnow_token');
-      if (!token) {
-        throw new Error('No authentication token found');
-      }
-      
-      const response = await axios.get(`${config.API_URL}/api/users/me/registrations`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (isMounted) {
-        setRegistrations(response.data || []);
-        setShowRegistrations(true);
-      }
-    } catch (err) {
-      console.error('Failed to fetch registrations', err);
-      if (isMounted) {
-        setShowRegistrations(false);
-        if (err.response?.status === 401) {
-          // Token expired or invalid
-          localStorage.removeItem('eventnow_token');
-          sessionStorage.removeItem('eventnow_token');
-          window.location.href = '/login';
-        }
-      }
-    } finally {
-      if (isMounted) {
-        setDataLoading(false);
-      }
-    }
-  }, [isMounted]);
-
-  // Update form data when user data is loaded
   useEffect(() => {
     if (user) {
       setFormData(prev => ({
         ...prev,
-        full_name: user.full_name || '',
+        name: user.name || '',
         email: user.email || ''
       }));
       
-      if (isMounted) {
-        fetchUserRegistrations();
+      if (user.profileImage) {
+        setPreviewImage(`${config.API_URL}/uploads/profiles/${user.profileImage}`);
+      } else {
+        setPreviewImage('https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y');
       }
     }
-  }, [user, isMounted, fetchUserRegistrations]);
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value
-    });
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+        toast.error('Image size should be less than 2MB');
+        return;
+      }
+      setProfileImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const validateForm = () => {
+    if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
+      toast.error('New passwords do not match');
+      return false;
+    }
+    
+    if (formData.newPassword && !formData.currentPassword) {
+      toast.error('Current password is required to change password');
+      return false;
+    }
+    
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isMounted) return;
+    
+    if (!validateForm()) return;
     
     setLoading(true);
-    setSuccess(null);
-    setError(null);
-    
-    // Validate form data
-    if (!formData.full_name.trim()) {
-      setError('Full name is required');
-      setLoading(false);
-      return;
-    }
-    
-    // Check if passwords match when changing password
-    if (formData.new_password) {
-      if (formData.new_password !== formData.confirm_password) {
-        setError('New passwords do not match');
-        setLoading(false);
-        return;
-      }
-      
-      if (!formData.current_password) {
-        setError('Current password is required to change password');
-        setLoading(false);
-        return;
-      }
-      
-      if (formData.new_password.length < 6) {
-        setError('New password must be at least 6 characters long');
-        setLoading(false);
-        return;
-      }
-    }
     
     try {
+      const formDataToSend = new FormData();
+      
+      // Add profile image if selected
+      if (profileImage) {
+        formDataToSend.append('profileImage', profileImage);
+      }
+      
+      // Add other form data
+      formDataToSend.append('name', formData.name);
+      if (formData.currentPassword) {
+        formDataToSend.append('currentPassword', formData.currentPassword);
+      }
+      if (formData.newPassword) {
+        formDataToSend.append('newPassword', formData.newPassword);
+      }
+      
       const token = localStorage.getItem('eventnow_token') || sessionStorage.getItem('eventnow_token');
-      if (!token) {
-        throw new Error('No authentication token found');
-      }
-      
-      // Prepare data for API
-      const profileData = {
-        name: formData.full_name.trim()
-      };
-      
-      // Include password fields if changing password
-      if (formData.new_password) {
-        profileData.current_password = formData.current_password;
-        profileData.password = formData.new_password;
-      }
-      
-      // Update profile
-      const response = await axios.put(`${config.API_URL}/api/users/me`, profileData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
+      const response = await axios.put(
+        `${config.API_URL}/api/users/me`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+          }
         }
-      });
+      );
       
       // Update user in Redux store
-      dispatch({
-        type: 'auth/updateUser',
-        payload: response.data
-      });
+      dispatch(updateUser(response.data.user));
       
-      // Reset password fields
+      // Reset form
       setFormData(prev => ({
         ...prev,
-        current_password: '',
-        new_password: '',
-        confirm_password: ''
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
       }));
       
-      setSuccess('Profile updated successfully');
+      toast.success('Profile updated successfully!');
+      
     } catch (err) {
-      console.error('Profile update error:', err);
-      if (err.response?.status === 401) {
-        // Token expired or invalid
-        localStorage.removeItem('eventnow_token');
-        sessionStorage.removeItem('eventnow_token');
-        window.location.href = '/login';
-      } else if (err.response?.data?.detail) {
-        setError(err.response.data.detail);
-      } else {
-        setError('Failed to update profile. Please try again.');
-      }
+      console.error('Error updating profile:', err);
+      toast.error(err.response?.data?.message || 'Failed to update profile. Please try again.');
     } finally {
-      if (isMounted) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Your Profile</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
-          <div className="mb-4">
-            <button 
-              onClick={fetchUserRegistrations}
-              className="text-blue-600 hover:underline"
-            >
-              {showRegistrations ? 'Hide My Registrations' : 'Show My Registrations'}
-            </button>
+    <MainLayout>
+      <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900">Profile Settings</h2>
+            <p className="mt-1 text-sm text-gray-500">
+              Update your account information and settings.
+            </p>
           </div>
           
-          {showRegistrations && (
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">My Event Registrations</h2>
-              {dataLoading ? (
-                <p>Loading registrations...</p>
-              ) : registrations.length > 0 ? (
-                <div className="space-y-4">
-                  {registrations.map(reg => (
-                    <div key={reg.id} className="border rounded-lg p-4">
-                      <h3 className="font-semibold">{reg.event?.title || 'Event'}</h3>
-                      <p>Status: {reg.status || 'Registered'}</p>
-                      <p>Registered at: {new Date(reg.created_at).toLocaleString()}</p>
-                    </div>
-                  ))}
+          <form onSubmit={handleSubmit} className="divide-y divide-gray-200">
+            {/* Profile Picture Section */}
+            <div className="px-4 py-6 sm:px-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <img
+                    className="h-20 w-20 rounded-full object-cover"
+                    src={previewImage}
+                    alt="Profile"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+                    }}
+                  />
                 </div>
-              ) : (
-                <p>No event registrations found.</p>
-              )}
+                <div className="ml-4">
+                  <div className="text-sm font-medium text-gray-900">Profile photo</div>
+                  <div className="mt-1">
+                    <label
+                      htmlFor="profile-image"
+                      className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
+                    >
+                      <span>Change</span>
+                      <input
+                        id="profile-image"
+                        name="profile-image"
+                        type="file"
+                        className="sr-only"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
+                    </label>
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">JPG, GIF or PNG. Max size 2MB</p>
+                </div>
+              </div>
             </div>
-          )}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            {success && (
-              <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
-                <p className="text-green-700">{success}</p>
-              </div>
-            )}
             
-            {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
-                <p className="text-red-700">{error}</p>
-              </div>
-            )}
-            
-            <form onSubmit={handleSubmit}>
+            {/* Personal Information Section */}
+            <div className="px-4 py-6 sm:px-6">
               <div className="mb-6">
-                <h2 className="text-lg font-semibold mb-4">Personal Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input
-                      type="text"
-                      id="full_name"
-                      name="full_name"
-                      value={formData.full_name}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      className="w-full px-4 py-2 border rounded-md bg-gray-100"
-                      disabled
-                    />
-                    <p className="text-sm text-gray-500 mt-1">Email cannot be changed</p>
-                  </div>
-                </div>
+                <h3 className="text-lg font-medium leading-6 text-gray-900">Personal Information</h3>
+                <p className="mt-1 text-sm text-gray-500">Update your personal information.</p>
               </div>
               
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold mb-4">Change Password</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="current_password" className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                    <input
-                      type="password"
-                      id="current_password"
-                      name="current_password"
-                      value={formData.current_password}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div></div> {/* Empty div for grid alignment */}
-                  
-                  <div>
-                    <label htmlFor="new_password" className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                    <input
-                      type="password"
-                      id="new_password"
-                      name="new_password"
-                      value={formData.new_password}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
-                    <input
-                      type="password"
-                      id="confirm_password"
-                      name="confirm_password"
-                      value={formData.confirm_password}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
+              <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div className="sm:col-span-6">
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    Full name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    required
+                  />
+                </div>
+                
+                <div className="sm:col-span-6">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email address
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={formData.email}
+                    disabled
+                    className="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
                 </div>
               </div>
-              
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300"
-                >
-                  {loading ? 'Saving...' : 'Save Changes'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        
-        <div>
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-lg font-semibold mb-4">Your Event Registrations</h2>
+            </div>
             
-            {dataLoading ? (
-              <p className="text-gray-500">Loading your registrations...</p>
-            ) : registrations.length === 0 ? (
-              <div className="text-center py-6">
-                <p className="text-gray-500 mb-4">You haven't registered for any events yet.</p>
-                <Link to="/events" className="text-blue-600 hover:underline">Browse Events</Link>
+            {/* Change Password Section */}
+            <div className="px-4 py-6 sm:px-6">
+              <div className="mb-6">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">Change Password</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  Leave these fields empty if you don't want to change your password.
+                </p>
               </div>
-            ) : (
-              <div className="space-y-4">
-                {registrations.map((registration) => (
-                  <div key={registration.id} className="border rounded-md p-4">
-                    <h3 className="font-medium mb-2">{registration.event.title}</h3>
-                    <div className="text-sm text-gray-600 mb-2">
-                      <span className={`inline-block px-2 py-1 text-xs rounded-full mr-2 ${
-                        registration.event.category === 'academic' ? 'bg-blue-100 text-blue-800' :
-                        registration.event.category === 'culture' ? 'bg-purple-100 text-purple-800' :
-                        registration.event.category === 'sports' ? 'bg-green-100 text-green-800' :
-                        registration.event.category === 'seminar' ? 'bg-yellow-100 text-yellow-800' :
-                        registration.event.category === 'workshop' ? 'bg-indigo-100 text-indigo-800' :
-                        registration.event.category === 'competition' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {registration.event.category.charAt(0).toUpperCase() + registration.event.category.slice(1)}
-                      </span>
-                      <span>
-                        {new Date(registration.event.start_datetime).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className={`px-2 py-1 text-xs rounded-full ${
-                        registration.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                        registration.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        registration.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {registration.status.charAt(0).toUpperCase() + registration.status.slice(1)}
-                      </span>
-                      <Link to={`/events/${registration.event.id}`} className="text-blue-600 hover:underline text-sm">
-                        View Event
-                      </Link>
-                    </div>
-                  </div>
-                ))}
+              
+              <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div className="sm:col-span-6">
+                  <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    id="currentPassword"
+                    value={formData.currentPassword}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                
+                <div className="sm:col-span-3">
+                  <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    id="newPassword"
+                    value={formData.newPassword}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                
+                <div className="sm:col-span-3">
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+            
+            {/* Form Actions */}
+            <div className="px-4 py-4 bg-gray-50 text-right sm:px-6">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="mr-3 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 
