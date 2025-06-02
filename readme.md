@@ -7,7 +7,8 @@
   [![Pyramid](https://img.shields.io/badge/Pyramid-306998?logo=pyramid&logoColor=white)](https://trypyramid.com/)
   [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
   
-  ![EventNow Banner](![image](https://github.com/user-attachments/assets/b31f4812-c0e0-4ea4-b13c-5231807b0409))
+ ![download (2)](https://github.com/user-attachments/assets/3f66325c-0454-48f8-bd40-135fb4d85637)
+
 </div>
 
 ## 📋 Daftar Isi
