@@ -7,7 +7,7 @@
   [![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
   [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
   
-  ![EventNow Banner](https://via.placeholder.com/1200x400/4F46E5/FFFFFF?text=EventNow+Platform+Manajemen+Event+Kampus)
+  ![EventNow Banner](![image](https://github.com/user-attachments/assets/b31f4812-c0e0-4ea4-b13c-5231807b0409))
 </div>
 
 ## 📋 Daftar Isi
@@ -279,3 +279,26 @@ yarn test --coverage
    ```
 ## Kontak
 handayani.122140166@student.itera.ac.id
+
+# Dokumentasi
+## HOME PAGE
+![image](https://github.com/user-attachments/assets/dc0ada90-8a13-411f-af48-c5c2f29b793b)
+## EVENTS PAGE
+![image](https://github.com/user-attachments/assets/337b6267-7b42-4ffb-b7fd-b2e28d6272f2)
+## LOGIN PAGE
+![image](https://github.com/user-attachments/assets/e42d4e71-6e5d-4574-af18-ea366519be17)
+## REGISTER PAGE
+![image](https://github.com/user-attachments/assets/05d6a502-f4be-4023-92cc-c7b76b24118b)
+## PROFILE USER
+![image](https://github.com/user-attachments/assets/18bbc92c-8663-4c1f-b67a-e5595e37d081)
+## ADMIN DASHBOARD
+![image](https://github.com/user-attachments/assets/26b0c183-7bc2-4050-9a2e-0c1045b7948e)
+## ADMIN MANAGE EVENTS
+![image](https://github.com/user-attachments/assets/374cfd83-5083-45e2-a21f-f9963ca445ab)
+## ADMIN CREATE EVENTS
+![image](https://github.com/user-attachments/assets/e3e9bd54-1d04-4894-95a2-55a720b6e9cb)
+## ADMIN PROFILE
+![image](https://github.com/user-attachments/assets/0f5604a5-a33e-41b7-9c9c-c59447f755c0)
+
+
+
