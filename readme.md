@@ -4,7 +4,7 @@
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
-  [![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+  [![Pyramid](https://img.shields.io/badge/Pyramid-306998?logo=pyramid&logoColor=white)](https://trypyramid.com/)
   [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
   
   ![EventNow Banner](![image](https://github.com/user-attachments/assets/b31f4812-c0e0-4ea4-b13c-5231807b0409))
