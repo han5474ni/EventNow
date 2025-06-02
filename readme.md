@@ -16,8 +16,6 @@
 - [🛠️ Instalasi](#%EF%B8%8F-instalasi)
 - [📚 Dokumentasi API](#-dokumentasi-api)
 - [🧪 Testing](#-testing)
-- [🤝 Berkontribusi](#-berkontribusi)
-- [📄 Lisensi](#-lisensi)
 - [📞 Kontak](#-kontak)
 
 ## ✨ Fitur Unggulan
@@ -285,6 +283,8 @@ handayani.122140166@student.itera.ac.id
 ![image](https://github.com/user-attachments/assets/dc0ada90-8a13-411f-af48-c5c2f29b793b)
 ## EVENTS PAGE
 ![image](https://github.com/user-attachments/assets/337b6267-7b42-4ffb-b7fd-b2e28d6272f2)
+## DETAIL EVENT
+![image](https://github.com/user-attachments/assets/99d58af3-0697-474f-bfe3-dd131a7edcde)
 ## LOGIN PAGE
 ![image](https://github.com/user-attachments/assets/e42d4e71-6e5d-4574-af18-ea366519be17)
 ## REGISTER PAGE
@@ -299,6 +299,7 @@ handayani.122140166@student.itera.ac.id
 ![image](https://github.com/user-attachments/assets/e3e9bd54-1d04-4894-95a2-55a720b6e9cb)
 ## ADMIN PROFILE
 ![image](https://github.com/user-attachments/assets/0f5604a5-a33e-41b7-9c9c-c59447f755c0)
+
 
 
 
