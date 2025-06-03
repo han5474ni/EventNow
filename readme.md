@@ -182,7 +182,7 @@ yarn test --coverage
 ## 📞 Kontak
 
 - **Email**: handayani.122140166@student.itera.ac.id
-- **Twitter**: [@EventNowID](https://twitter.com/EventNowID)
+- **Instagram**: @handayani_aja_
 
 ## 🙏 Ucapan Terima Kasih
 
