@@ -179,11 +179,6 @@ npm test -- --coverage
 yarn test --coverage
 ```
 
-## 📞 Kontak
-
-- **Email**: handayani.122140166@student.itera.ac.id
-- **Instagram**: @handayani_aja_
-
 ## Struktur Proyek
 
 ```
@@ -225,7 +220,10 @@ yarn test --coverage
 ## ADMIN PROFILE
 ![image](https://github.com/user-attachments/assets/0f5604a5-a33e-41b7-9c9c-c59447f755c0)
 
+## 📞 Kontak
 
+- **Email**: handayani.122140166@student.itera.ac.id
+- **Instagram**: @handayani_aja_
 ---
 
 <div align="center">
