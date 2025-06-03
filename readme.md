@@ -11,9 +11,9 @@
 
 </div>
  <h1>Platform ini dikembangkan untuk:</h1>
-- [Sentralisasi Informasi: Mengintegrasikan seluruh informasi event kampus dalam satu platform, Memudahkan akses informasi bagi mahasiswa, Mengurangi missed opportunity dalam partisipasi event]()
-- [Optimalisasi Promosi: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi]()
-- [Peningkatan Engagement: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus]()
+- Sentralisasi Informasi: Mengintegrasikan seluruh informasi event kampus dalam satu platform, Memudahkan akses informasi bagi mahasiswa, Mengurangi missed opportunity dalam partisipasi event
+- Optimalisasi Promosi: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi
+- Peningkatan Engagement: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus
 
 
 ## 📋 Daftar Isi
@@ -26,7 +26,7 @@
 
 ## ✨ Fitur Unggulan
 
-### 🎯 Untuk Peserta
+### 🎯 Untuk User
 - 🔍 Temukan event kampus dengan mudah
 - 📅 Lihat jadwal dan detail event secara lengkap
 - 🎟️ Daftar event dengan sekali klik
