@@ -1,6 +1,6 @@
 <div align="center">
   <h1>🎉 EventNow: Platform Manajemen Event Kampus</h1>
-  <p>Platform terdepan untuk menemukan, mengelola, dan berpartisipasi dalam berbagai acara kampus</p>
+  <p>EventNow hadir sebagai platform digital yang menjembatani kesenjangan informasi antara penyelenggara event kampus dengan mahasiswa.</p>
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
@@ -10,10 +10,10 @@
  ![download (2)](https://github.com/user-attachments/assets/3f66325c-0454-48f8-bd40-135fb4d85637)
 
 </div>
-EventNow hadir sebagai platform digital yang menjembatani kesenjangan informasi antara penyelenggara event kampus dengan mahasiswa. Platform ini dikembangkan untuk:
-- Sentralisasi Informasi: Mengintegrasikan seluruh informasi event kampus dalam satu platform, Memudahkan akses informasi bagi mahasiswa, Mengurangi missed opportunity dalam partisipasi event
-- Optimalisasi Promosi: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi
-- Peningkatan Engagement: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus
+ <h1>Platform ini dikembangkan untuk:</h1>
+- [Sentralisasi Informasi: Mengintegrasikan seluruh informasi event kampus dalam satu platform, Memudahkan akses informasi bagi mahasiswa, Mengurangi missed opportunity dalam partisipasi event]
+- [Optimalisasi Promosi: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi]
+- [Peningkatan Engagement: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus]
 
 
 ## 📋 Daftar Isi
