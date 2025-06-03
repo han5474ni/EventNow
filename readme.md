@@ -74,7 +74,7 @@
 
 1. Clone repositori:
    ```bash
-   git clone https://github.com/username/EventNow.git
+   git clone https://github.com/Han5474ni/EventNow.git
    cd EventNow/Backend
    ```
 
