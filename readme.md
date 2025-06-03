@@ -10,7 +10,8 @@
  ![download (2)](https://github.com/user-attachments/assets/3f66325c-0454-48f8-bd40-135fb4d85637)
 
 </div>
- <h1>Platform ini dikembangkan untuk:</h1>
+
+## Platform ini dikembangkan untuk:
 - Sentralisasi Informasi: Mengintegrasikan seluruh informasi event kampus dalam satu platform, Memudahkan akses informasi bagi mahasiswa, Mengurangi missed opportunity dalam partisipasi event
 - Optimalisasi Promosi: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi
 - Peningkatan Engagement: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus
