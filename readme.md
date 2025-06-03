@@ -184,17 +184,6 @@ yarn test --coverage
 - **Email**: handayani.122140166@student.itera.ac.id
 - **Instagram**: @handayani_aja_
 
-## 🙏 Ucapan Terima Kasih
-
-- Dibangun dengan ❤️ untuk Pemrograman Web ITERA
-
----
-
-<div align="center">
-  <p>© 2025 EventNow - All Rights Reserved</p>
-  <p>Dibuat dengan 💙 oleh Iohn</p>
-</div>
-
 ## Struktur Proyek
 
 ```
@@ -213,70 +202,6 @@ yarn test --coverage
 │   ├── services/       # Business logic
 │   └── templates/      # Email templates
 ```
-
-## Cara Instalasi
-
-### Prerequisites
-- Python 3.12+
-- Node.js 14+
-- PostgreSQL/SQLite
-
-### Backend Setup
-1. Masuk ke direktori Backend:
-   ```bash
-   cd Backend
-   ```
-2. Buat virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   .\venv\Scripts\activate   # Windows
-   ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Setup database:
-   ```bash
-   python create_database.py
-   ```
-5. Jalankan aplikasi:
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-### Frontend Setup
-1. Masuk ke direktori frontend:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Jalankan aplikasi:
-   ```bash
-   npm start
-   ```
-
-## Konfigurasi
-
-1. Backend (.env):
-   ```
-   DATABASE_URL=postgresql://user:password@localhost/dbname
-   SECRET_KEY=your_secret_key
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=your_email@gmail.com
-   SMTP_PASSWORD=your_password
-   ```
-
-2. Frontend (.env):
-   ```
-   REACT_APP_API_URL=http://localhost:8000
-   ```
-## Kontak
-handayani.122140166@student.itera.ac.id
 
 # Dokumentasi
 ## HOME PAGE
@@ -299,6 +224,18 @@ handayani.122140166@student.itera.ac.id
 ![image](https://github.com/user-attachments/assets/e3e9bd54-1d04-4894-95a2-55a720b6e9cb)
 ## ADMIN PROFILE
 ![image](https://github.com/user-attachments/assets/0f5604a5-a33e-41b7-9c9c-c59447f755c0)
+
+## 🙏 Ucapan Terima Kasih
+
+- Dibangun dengan ❤️ untuk Pemrograman Web ITERA
+
+---
+
+<div align="center">
+  <p>© 2025 EventNow - All Rights Reserved</p>
+  <p>Dibuat dengan 💙 oleh Iohn</p>
+</div>
+
 
 
 
