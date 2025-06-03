@@ -194,7 +194,6 @@ yarn test --coverage
   <p>© 2025 EventNow - All Rights Reserved</p>
   <p>Dibuat dengan 💙 oleh Iohn</p>
 </div>
-- Email service integration
 
 ## Struktur Proyek
 
