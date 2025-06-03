@@ -11,9 +11,9 @@
 
 </div>
 EventNow hadir sebagai platform digital yang menjembatani kesenjangan informasi antara penyelenggara event kampus dengan mahasiswa. Platform ini dikembangkan untuk:
-1. Sentralisasi Informasi: Mengintegrasikan seluruh informasi event kampus dalam satu platform, Memudahkan akses informasi bagi mahasiswa, Mengurangi missed opportunity dalam partisipasi event
-2. Optimalisasi Promosi: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi
-3. Peningkatan Engagement: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus
+- Sentralisasi Informasi: Mengintegrasikan seluruh informasi event kampus dalam satu platform, Memudahkan akses informasi bagi mahasiswa, Mengurangi missed opportunity dalam partisipasi event
+- Optimalisasi Promosi: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi
+- Peningkatan Engagement: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus
 
 
 ## 📋 Daftar Isi
