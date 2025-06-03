@@ -225,9 +225,6 @@ yarn test --coverage
 ## ADMIN PROFILE
 ![image](https://github.com/user-attachments/assets/0f5604a5-a33e-41b7-9c9c-c59447f755c0)
 
-## 🙏 Ucapan Terima Kasih
-
-- Dibangun dengan ❤️ untuk Pemrograman Web ITERA
 
 ---
 
