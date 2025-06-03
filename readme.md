@@ -16,6 +16,10 @@
 - **Optimalisasi Promosi**: Menyediakan kanal promosi terpusat, Meningkatkan visibility event kampus, dan Memperluas jangkauan informasi
 - **Peningkatan Engagement**: Mendorong partisipasi aktif mahasiswa, Membangun komunitas kampus yang lebih dinamis, dan Meningkatkan awareness terhadap kegiatan kampus
 
+## Tantangan Pengembangan Project
+- **Integrasi Sistem yang Kompleks**: Mengintegrasikan berbagai teknologi (Python di backend, React di frontend) dan menjaga sinkronisasi data real-time antara frontend dan backend
+- **Manajemen State yang Kompleks**: Menangani state untuk pendaftaran event yang bersamaan
+- **Pengujian yang Komprehensif**: Membuat test case untuk semua fitur
 
 ## 📋 Daftar Isi
 - [✨ Fitur Unggulan](#-fitur-unggulan)
